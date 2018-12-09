@@ -4,6 +4,15 @@ use std::fs;
 fn main() {
     let contents = fs::read_to_string("input/input.txt")
         .expect("Could not read input file");
+
+    // part 1
+    println!("Checksum: {}", get_checksum(&contents));
+
+    // part 2
+    println!("Common: {}", get_common(&contents));
+}
+
+fn get_checksum(contents: &str) -> i32 {
     let mut twos = 0;
     let mut threes = 0;
 
@@ -19,7 +28,7 @@ fn main() {
         }
     }
 
-    println!("Checksum: {}", twos * threes);
+    return twos * threes;
 }
 
 fn get_counts(line: &str) -> Vec<i32> {
@@ -61,3 +70,36 @@ fn get_has_exacts(counts: Vec<i32>) -> (bool, bool) {
 
     (has_two, has_three)
 }
+
+fn get_common(contents: &str) -> String {
+    let ids: Vec<&str> = contents.lines().collect();
+
+    for i in 0..ids.len() {
+        for j in i + 1..ids.len() {
+            if let Some(common) = check_common(&ids[i], &ids[j]) {
+                return common;
+            }
+        }
+    }
+
+    "common string not found".to_string()
+}
+
+fn check_common(id1: &str, id2: &str) -> Option<String> {
+    if id1.len() == id2.len() {
+        let without_common: String = id1.chars().zip(id2.chars())
+            .filter(|&(letter1, letter2)| letter1 == letter2)
+            .map(|(letter, _)| letter)
+            .collect();
+
+        if without_common.len() == id1.len() - 1 {
+            return Some(without_common);
+        }
+    }
+
+    None
+}
+
+// hnzdozexltwgsfamqprbnuc
+// wczgokexltwgsfamvprbnuy
+
