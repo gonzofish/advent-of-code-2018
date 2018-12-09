@@ -100,6 +100,3 @@ fn check_common(id1: &str, id2: &str) -> Option<String> {
     None
 }
 
-// hnzdozexltwgsfamqprbnuc
-// wczgokexltwgsfamvprbnuy
-
